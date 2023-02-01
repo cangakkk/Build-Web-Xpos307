@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model VMTblCustomer
+@{
+    Layout = null;
+}
+
+<div class="h2">Customer</div>
+<br>
+<div class="card">
+    <form id="frmCustomer" asp-action="Detail">
+        <div class="card-header">Create New</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label>Name</label>
+                <input type="text" name="Name" class="form-control" value="@Model.Name" disabled/>
+                <input type="hidden" name="Id" class="form-control" value="@Model.Id"/>
+            </div>
+            <div class="mb-3">
+                <label>Address</label>
+                <input type="text" name="Address" class="form-control" value="@Model.Address" disabled/>
+            </div>
+            <div class="mb-3">
+                <label>Phone</label>
+                <input type="tel" name="Phone" class="form-control" value="@Model.Phone" disabled/>
+            </div>
+            <div class="mb-3">
+                <label>RoleId</label>
+                <input type="text" name="RoleId" class="form-control" value="@Model.RoleId" disabled/>
+            </div>
+            <div class="mb-2">
+                <label>UpdateBy</label>
+                <input type="text" name="UpdateBy" class="form-control" value="@Model.UpdateBy" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Update Date</label>
+                <input type="text" name="UpdateDate" class="form-control" value="@Model.UpdateDate" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Create By</label>
+                <input type="text" name="CreateBy" class="form-control" value="@Model.CreateBy" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Create Date</label>
+                <input type="text" name="Category" class="form-control" value="@Model.CreateDate" disabled />
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" id="btnCancel"> Cancel </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#btnCancel").click(function () {
+        $("#MyModal").modal("hide");
+    });
+
+</script>

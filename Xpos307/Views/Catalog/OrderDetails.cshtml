@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model List<VMTblOrderDetail>
+@{
+    Layout = null;
+}
+
+<table class="table table-hover">
+    <thead class="bg-secondary text-white">
+        <tr>
+            <th>Product Name</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Sub Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(VMTblOrderDetail detail in Model)
+        {
+            <tr>
+                <th>@detail.ProductName</th>
+                <th class="text-center">@detail.Price</th>
+                <th class="text-center">@detail.Qty</th>
+                <th class="text-center">(@detail.Price*@detail.Qty)</th>
+            </tr>
+        }
+    </tbody>
+</table>

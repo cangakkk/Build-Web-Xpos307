@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model VMTblProduct
+@{
+    Layout = null;
+}
+
+<div class="h2">Variant</div>
+<br>
+
+<div class="card">
+    <form id="frmNameCategory" asp-action="Detail">
+        <div class="card-header">Menu Detail</div>
+        <img class="card-img" src="~/Images/@(Model.Image??"image-empty.png")" />
+        <div class="card-columns">
+            <div class="mb-2">
+                <label>Name</label>
+                <input type="text" name="Name" class="form-control" value="@Model.Name" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Category</label>
+                <input type="text" name="Category" class="form-control" value="@Model.CategoryName" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Variant</label>
+                <input type="text" name="Variant" class="form-control" value="@Model.VariantName" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Price</label>
+                <input type="text" name="Price" class="form-control" value="@Model.Price" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Stock</label>
+                <input type="text" name="Stock" class="form-control" value="@Model.Stock" disabled />
+            </div>
+            <div class="mb-2">
+                <label>UpdateBy</label>
+                <input type="text" name="UpdateBy" class="form-control" value="@Model.UpdateBy" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Update Date</label>
+                <input type="text" name="UpdateDate" class="form-control" value="@Model.UpdateDate" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Create By</label>
+                <input type="text" name="CreateBy" class="form-control" value="@Model.CreateBy" disabled />
+            </div>
+            <div class="mb-2">
+                <label>Create Date</label>
+                <input type="text" name="Category" class="form-control" value="@Model.CreateDate" disabled />
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" id="btnCancel"> Back </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#btnCancel").click(function () {
+        $("#MyModal").modal("hide");
+    });
+</script>

@@ -1,0 +1,135 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@using Xpos307.AddOns
+@model Pagination<VMTblProduct>
+
+@{
+
+}
+
+<div class="card">
+    <div class="card-header font-weight-bold">
+        Product
+    </div>
+    <div class="card-body">
+        <form id="frmFind" asp-action="Index">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" id="btnAdd">Add</button>
+            <div class="input-group w-50">
+                <input name="Name" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value="@ViewBag.Name">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btnFind"><i class="fa fa-search"></i> </button>
+            </div>
+        </div>
+         </form>
+
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderId">
+                            ID
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderName">
+                           Name
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderVar">
+                            Variant
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderCat">
+                           Category
+                        </a>
+                    </th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (VMTblProduct Product in Model)
+                {
+                    <tr>
+                        <th>
+                            <img src="~/Images/@(Product.Image??"image-empty.png")" 
+                            class="rounded-circle show_image" 
+                            data-scr="~/Images/@Product.Image" 
+                            height="40" width="40"/>
+                        </th>
+                        <td>@Product.Id</td>
+                        <td>@Product.Name</td>
+                        <td>@Product.VariantName</td>
+                        <td>@Product.CategoryName</td>
+                        <td>
+                            <button class="btn btn-success btnEdit" data-productid="@Product.Id" type="button">Edit</button>
+                            <button class="btn btn-primary btnDetail" data-productid="@Product.Id" type="submit">Detail</button>
+                            <button class="btn btn-danger btnDelete" data-productid="@Product.Id" type="submit"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @*<div class="card-footer">
+        <a asp-action="Index"
+            asp-route-filter="@ViewBag.Name"
+            asp-route-orderBy="@ViewBag.OrderId"
+            asp-route-pageNumber="@(Model.PageIndex-1)"
+            asp-route-showData="@ViewBag.Showdata">
+            Previous
+        </a>
+        Page @Model.PageIndex of @Model.TotalPages
+        <a asp-action="Index"
+            asp-route-filter="@ViewBag.Filter"
+            asp-route-orderBy="@ViewBag.OrderId"
+            asp-route-pageNumber="@(Model.PageIndex+1)"
+            asp-route-showData="@ViewBag.Showdata">
+            Next
+        </a>
+    </div>*@
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnAdd").click(function () {
+            $("#MyModalBody").load("/Product/Add");
+            $("#MyModal").modal("show");
+        });
+
+        $("#btnFind").click(function () {
+            $("#frmFind").submit();
+        });
+
+        $(".btnEdit").click(function () {
+            var productid = $(this).data("productid");
+            $("#MyModalBody").load("/Product/Edit?ProductId=" + productid);
+            $("#MyModal").modal("show");
+        });
+
+        $(".btnDelete").click(function () {
+            var productid = $(this).data("productid");
+            $("#MyModalBody").load("/Product/Delete?ProductId=" + productid);
+            $("#MyModal").modal("show");
+        });
+
+        $(".btnDetail").click(function () {
+            var ProductID = $(this).data("productid");
+            $("#MyModalBody").load("/Product/Detail?ProductID=" + ProductID);
+            $("#MyModal").modal("show");
+        });
+    });
+</script>

@@ -1,0 +1,189 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Xpos307.ViewModels
+@model List<VMTblProduct>
+
+@{
+}
+
+<div class="card" >
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="p-2 bg-primary text-center">
+                        <div class="h1 text-white" id="totItem">0</div>
+                        <div class="h6 text-white">Total Item</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="p-2 bg-cyan text-center">
+                        <div class="h1 text-white" id="estPrice">0</div>
+                        <div class="h6 text-white">Estimated Price</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <div class="card">
+                    <div class="p-2 bg-success text-center">
+                        <div class="h1 text-white"><i class="fas fa-shopping-bag"></i></div>
+                        <button id="addToCart" class="btn btn-link h6 text-white stretched-link" disabled>Add To Chart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach(VMTblProduct item in Model)
+            {
+                <div class="col-lg-3 col-md-6 col-xs-12">
+                    <div class="card">
+                        <img class="card-img" src="~/Images/@(item.Image??"image-empty.png")"/>
+
+                        <div class="card-body">
+                            <div class="card-title h4" title="" id="name-@item.Id">@item.Name</div>
+                            <div class="card-text">Price:<span id="price-@item.Id">@item.Price</span></div>
+                            <div class="card-text">Stock:<span id="stock-@item.Id">@item.Stock</span></div>
+                            <label class="text-danger" id="stock-validation-@item.Id"></label>
+                            <div class="row">
+                                <div class="col input-group">
+                                    <button class="btn btn-danger"
+                                        data-id="@item.Id">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <span class="form-control" id="item-@item.Id">0</span>
+                                    <button class="btn btn-success "
+                                        data-id="@item.Id">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let listCart = [];
+    let item = {};
+    let totItem = parseInt($("#totItem").text());
+    let estPrice = parseInt($("#estPrice").text());
+
+    $(".btn-success").click(function(){
+
+        //debugger;
+
+        item = {};
+
+        //Get Product data
+        let prodId = $(this).data("id");
+        let prodName = $("#name-" + prodId).text();
+        let prodPrice = parseInt($("#price-" + prodId).text());
+        let prodStock = parseInt($("#stock-" + prodId).text());
+        let itemQty = parseInt($("#item-" + prodId).text());
+
+        //debugger;
+
+        checkStock(prodId, prodStock);
+        if(prodStock>0){
+            //counter
+            totItem++;
+            estPrice+=prodPrice;
+            prodStock--;
+            itemQty++;
+
+            //update
+            $("#totItem").text(totItem);
+            $("#estPrice").text(estPrice);
+            $("#item-" + prodId).text(itemQty);
+            $("#stock-" + prodId).text(prodStock);
+
+            //Add
+            item.ProductId = prodId;
+            item.Qty = itemQty;
+            item.SumPrice = itemQty * prodPrice;
+            item.ProductName = prodName;
+            item.Price = prodPrice;
+
+            let itemIdx = listCart.map(i => i.ProductId).indexOf(prodId);
+            if(itemIdx==-1)
+            {
+                listCart.push(item)
+            }
+            else
+            {
+                listCart[itemIdx].Qty = itemQty;
+                listCart[itemIdx].SumPrice = itemQty * prodPrice;
+            }
+        }
+
+        if(listCart.length>0){
+            $("#addToCart").attr("disabled", false);
+        }
+    });
+
+    $(".btn-danger").click(function () {
+        item = {};
+
+        let prodId = $(this).data("id");
+        let prodName = $("#name-" + prodId).text();
+        let prodPrice = parseInt($("#price-" + prodId).text());
+        let prodStock = parseInt($("#stock-" + prodId).text());
+        let itemQty = parseInt($("#item-" + prodId).text());
+
+        if(itemQty>0){
+            totItem--;
+            estPrice-=prodPrice;
+            prodStock++;
+            itemQty--;
+
+            debugger;
+
+            $("#totItem").text(totItem);
+            $("#estPrice").text(estPrice);
+            $("#item-" + prodId).text(itemQty);
+            $("#stock-" + prodId).text(prodStock);
+
+            let itemIdx = listCart.map(i => i.ProductId).indexOf(prodId);
+            if(itemIdx != -1){
+                listCart[itemIdx].Qty = itemQty;
+                listCart[itemIdx].SumPrice = itemQty * prodPrice;
+            }
+            if(itemQty == 0){
+                listCart.splice(itemIdx,1);
+            }
+        }
+        if (listCart.length < 1) {
+            $("#addToCart").attr("disabled", true);
+        }
+        checkStock(prodId, prodStock);
+    });
+
+    $("#addToCart").click(function() {
+        $("#MyModalBody").load("/Catalog/OrderPreview", {
+            "listCart": listCart,
+            "totalQty": totItem,
+            "amount": estPrice
+        });
+        //debugger;
+
+        $("#MyModal").modal("show");
+    });
+
+
+    function checkStock(id,stock){
+        if(checkStock<1)
+            $("#stock-validation-"+id).text("Out of Stock");
+        else
+            $("#stock-validation-"+id).text("");
+    }
+</script>

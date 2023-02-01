@@ -1,0 +1,116 @@
+﻿﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model List<VMTblOrderDetail>
+@{
+    Layout = null;
+}
+
+<div class="card" id="preview">
+    <div class="card-title">Order Preview</div>
+    <div class="card-body">
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sub-Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (VMTblOrderDetail item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td class="text-right">@item.Price</td>
+                        <td class="text-right">@item.Qty</td>
+                        <td class="text-right">@item.SumPrice</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="font-weight-bold">
+                    <td colspan="2">TOTAL</td>
+                    <td class="text-right">@ViewBag.TotalQty</td>
+                    <td class="text-right">@ViewBag.Amount</td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-success" id="btnOrder">Order</button>
+        <button type="submit" class="btn btn-warning" id="btnOrderSave">Save Order</button>
+        <button id="btnCancel" class="btn btn-danger">Cancel</button>
+    </div>
+</div>
+
+<script>
+    $("#btnCancel").click(function () {
+        $("#MyModal").modal("hide");
+    });
+
+
+    $("#btnOrder").click(function () {
+       debugger;
+
+       $.ajax({
+           url: '/Catalog/SubmitOrder',
+           data:{
+                orderCart: listCart,
+                totalItem: totItem,
+                totalAmount: estPrice,
+                isCheckOut: true
+           },
+           type: "post",
+           dataType:"json",
+           beforeSend:function(){
+                $(".Modal").modal("show");
+           },
+           success: function(apiResponse){
+                $(".Modal").modal("hide");
+                if(apiResponse.success){
+                    alert(apiResponse.message);
+                }
+                window.location.reload();
+           },
+           error: function (errResponse) {
+                $(".Modal").modal("hide");
+                window.location.reload();
+           }
+       });
+    });
+
+
+    $("#btnOrderSave").click(function () {
+        $.ajax({
+            url: '/Catalog/SubmitOrder',
+            data: {
+                orderCart: listCart,
+                totalItem: totItem,
+                totalAmount: estPrice,
+                isCheckOut: false
+            },
+            type: "post",
+            dataType: "json",
+            beforeSend: function () {
+                $(".Modal").modal("show");
+            },
+            success: function (apiResponse) {
+                //$(".Modal").modal("hide");
+                if(apiResponse.success){
+                    alert(apiResponse.message);
+                }
+                location.reload();
+            },
+            error: function (errResponse) {
+                //$(".Modal").modal("hide");
+                alert(apiResponse.message);
+                window.location.reload();
+            }
+        });
+    });
+</script>
+

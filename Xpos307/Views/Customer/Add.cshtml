@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model VMTblCustomer
+@{
+    Layout = null;
+}
+
+<div class="h2">Customer</div>
+<br>
+<div class="card">
+    <form id="frmCustomer" method="post" asp-action="Add">
+        <div class="card-header">Create New</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label>Name</label>
+                <input type="text" name="Name" placeholder="Please enter your Name here" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Address</label>
+                <input type="text" name="Address" placeholder="Please enter your address here" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password"  name="Password" class="form-control" placeholder="Please enter your password here" />
+            </div>
+            <div class="mb-3">
+                <label>Phone</label>
+                <input type="tel" name="Phone" placeholder="Please enter your phone Number here" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>RoleId</label>
+                <input type="text" name="RoleId" class="form-control" />
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="hidden" name="CreateBy" value="1" />
+            <button type="submit" class="btn btn-primary" id="btnSave"> Create </button>
+            <button type="button" class="btn btn-primary" id="btnCancel"> Cancel </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#btnCancel").click(function () {
+        $("#MyModal").modal("hide");
+    });
+
+    $("#frmCustomer").validate({
+        errorClass: "text-danger",
+        rules: {
+            Name: "required"
+        }
+    });
+</script>

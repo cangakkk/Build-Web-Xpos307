@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model VMTblCustomer
+@{
+    Layout = null;
+}
+
+<div class="h2">Customer</div>
+<br>
+<div class="card">
+    <form id="frmDeleteCustomer" method="post" asp-action="Delete">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <div class="card-header">Delete</div>
+        <div class="card-body">
+            <p class="h3">Are you SURE want to Remove Customer ?</p>
+        </div>
+        <div class="card-footer">
+            <input type="hidden" name="UpdateBy" value="3" />
+            <button type="submit" class="btn btn-danger" id="btnSave"> <i class="fas fa-trash-alt"></i></button>
+            <button type="Button" class="btn btn-primary" id="btnCancel">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#btnCancel").click(function () {
+        $("#MyModal").modal("hide");
+    });
+</script>

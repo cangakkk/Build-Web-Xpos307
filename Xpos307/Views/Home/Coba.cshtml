@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.DataModels
+@{
+    ViewData["Title"] = "Coba Doang";
+}
+
+<div>
+    <h1>Halaman Coba</h1>
+    <p>
+        Saya Hanya Coba-coba.
+    </p>
+    <ul>
+        @foreach (TblCoba item in ViewBag.TblCoba)
+        {
+            <li>@item.Id, @item.Name, @item.Description</li>
+
+        }
+    </ul>
+    
+</div>

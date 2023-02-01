@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Xpos307</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css"/>*@
+
+    <script src="~/adminmart/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <!--Admin Mart CSS-->
+    <link href="~/adminmart/assets/extra-libs/c3/c3.min.css" rel="stylesheet"/>
+    <link href="~/adminmart/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet"/>
+    <link href="~/adminmart/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
+    <link href="~/adminmart/dist/css/style.min.css" rel="stylesheet"/>
+
+</head>
+<body>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+        
+        <!-- Memanggil/menghubungkan fungsi _Header.cshtml -->
+        <partial name="_Header" />
+        <!-- ============================================================== -->
+
+        <!-- Memanggil/menghubungkan fungsi _Sidebar.cshtml dengan folder yang sama -->
+        <partial name="_Sidebar" />
+        <!-- ============================================================== -->
+        
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+
+            <!-- Memanggil/menghubungkan fungsi _Footer.cshtml dengan folder yang sama -->
+            <partial name="_Footer" />
+            <!-- ============================================================== -->
+        </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    <partial name="_Modal"/>
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    @*<script src="~/adminmart/assets/libs/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/adminmart/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="~/adminmart/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- apps -->
+    <!-- apps -->
+    <script src="~/adminmart/dist/js/app-style-switcher.js"></script>
+    <script src="~/adminmart/dist/js/feather.min.js"></script>
+    <script src="~/adminmart/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/adminmart/dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="~/adminmart/dist/js/custom.min.js"></script>
+
+    <!--This page JavaScript -->
+    <script src="~/adminmart/assets/extra-libs/c3/d3.min.js"></script>
+    <script src="~/adminmart/assets/extra-libs/c3/c3.min.js"></script>
+    <script src="~/adminmart/assets/libs/chartist/dist/chartist.min.js"></script>
+   @* <script src="~/adminmart/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+    <script src="~/adminmart/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="~/adminmart/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/adminmart/dist/js/pages/dashboards/dashboard1.min.js"></script>*@
+</body>
+</html>
+
+

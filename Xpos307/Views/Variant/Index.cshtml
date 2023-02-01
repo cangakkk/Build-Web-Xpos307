@@ -1,0 +1,111 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+
+@{
+
+}
+
+<div class="card">
+    <div class="card-header font-weight-bold">
+        Variant
+    </div>
+    <div class="card-body">
+        <form id="frmFind" asp-action="Index">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light" id="btnAdd">Add</button>
+            <div class="input-group w-50">
+                <input name="Name" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value="@ViewBag.Name">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search" id="btnFind"></i> </button>
+            </div>
+        </div>
+        </form>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th class="col-1">
+                        <a 
+                           asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderId">
+                           ID
+                        </a>
+                    </th>
+                    <th>
+                        <a 
+                           asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderName">
+                           Variant Name
+                        </a>
+                    </th>
+                    <th>
+                        <a 
+                           asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderCat">
+                           Category Name
+                        </a>
+                    </th>
+                    <th class="col-5">
+                        <a 
+                           asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderDesc">
+                           Description
+                        </a>
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (VMTblVariant Variant in Model)
+                {
+                    <tr>
+                        <th scope="row">@Variant.Id</th>
+                        <td>@Variant.Name</td>
+                        <td>@Variant.CategoryName</td>
+                        <td>@Variant.Description</td>
+                        <td>
+                            <button class="btn btn-success btnEdit" data-variantid="@Variant.Id" type="button">Edit</button>
+                            <button class="btn btn-primary btnDetail" data-variantid="@Variant.Id" type="submit">Detail</button>
+                            <button class="btn btn-danger btnDelete" data-variantid="@Variant.Id" type="submit"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnAdd").click(function () {
+            $("#MyModalBody").load("/Variant/Add");
+            $("#MyModal").modal("show");
+        });
+
+         $("#btnFind").click(function () {
+            $("#frmFind").submit();
+        });
+
+        $(".btnEdit").click(function () {
+            var variantId = $(this).data("variantid");
+            $("#MyModalBody").load("/Variant/Edit?variantId=" + variantId);
+            $("#MyModal").modal("show");
+        });
+
+        $(".btnDelete").click(function () {
+            var variantId = $(this).data("variantid");
+            $("#MyModalBody").load("/Variant/Delete?variantId=" + variantId);
+            $("#MyModal").modal("show");
+        });
+
+        $(".btnDetail").click(function () {
+            var variantId = $(this).data("variantid");
+            $("#MyModalBody").load("/Variant/Detail?variantId=" + variantId);
+            $("#MyModal").modal("show");
+        });
+    });
+</script>

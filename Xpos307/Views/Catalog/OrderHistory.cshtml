@@ -1,0 +1,102 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model List<VMTblOrderHeader>
+@{
+}
+<div class="card">
+    <div class="card-header">
+        Order History
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-light">Add</button>
+
+            <div class="input-group w-35">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon"><i class="fas fa-search"></i></span>
+            </div>
+        </div>
+        <div>
+            <table class="table table-hover align-middle mb-0 bg-white mt-4">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        @*<th>ID</th>*@
+                        <th >TRX Code</th>
+                        <th class="text-center">Total Qty</th>
+                        <th class="text-center">Checkout</th>
+                        <th class="text-center">Amount</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (VMTblOrderHeader order in Model)
+                    {
+                        <tr>
+                            @*<td>@order.Id</td>*@
+                            <td >@order.TrxCode</td>
+                            <td class="text-center">@order.TotalQty</td>
+                            <td class="text-center" data-ceckout="@order.IsCheckout"><i class="fas @(order.IsCheckout?"fa-check text-success":"fa-crosshairs text-danger")"></i></td>
+                            <td class="text-center">@order.Amount</td>
+                            <td class="text-center">
+                                <button data-id=@order.Id data-totalqty="@order.TotalQty" data-amount="@order.Amount" data-isceckout=@(!order.IsCheckout) class="btn btn-primary ceckout" @(order.IsCheckout?"disabled":"")>Ceckout</button>
+                                <button class="btn btn-secondary orderHeader" data-id=@order.Id>Detail</button>
+                            </td>
+                        </tr>
+                        <tr class="collapse" id="detail-row-@order.Id">
+                                <td colspan="5" class="p-0">
+                                    <div id="detail-@order.Id"></div>
+                                </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".orderHeader").click(function(){
+        let orderHeaderId = $(this).data("id");
+
+        //Load Detials Data
+        $("#detail-" + orderHeaderId).empty();
+        $("#detail-" + orderHeaderId).load("/Catalog/OrderDetails",{
+           "orderHeaderId": orderHeaderId
+        });
+
+        $("#detail-row-" + orderHeaderId).toggle();
+    });
+
+    $(".ceckout").click(function () {
+        debugger;
+        $.ajax({
+            url: "/Catalog/UpdateOrderHead",
+            data: {
+                orderHeaderId: $(this).data("id"),
+                totalQty: $(this).data("totalqty"),
+                Amount: $(this).data("amount"),
+                isCheckOut: $(this).data("isceckout")
+            },
+            type: "post",
+            dataType: "json",
+            beforeSend: function () {
+                $(".Modal").modal("show");
+            },
+            success: function (apiResponse) {
+                //$(".Modal").modal("hide");
+                if(apiResponse.success){
+                    alert(apiResponse.message);
+                }
+                window.location.reload();
+            },
+            error: function (errResponse) {
+                //$(".Modal").modal("hide");
+                alert(apiResponse.message);
+                window.location.reload();
+            }
+        });
+        debugger;
+    });
+</script>

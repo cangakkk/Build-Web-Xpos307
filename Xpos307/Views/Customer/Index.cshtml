@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model List<VMTblCustomer>
+
+@{
+
+}
+
+<div class="card">
+    <div class="card-header font-weight-bold">
+        Product
+    </div>
+    <div class="card-body">
+        <form id="frmFind" asp-action="Index">
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" id="btnAdd">Add</button>
+                <div class="input-group w-50">
+                    <input name="Name" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value="@ViewBag.Name">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btnFind"><i class="fa fa-search"></i> </button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderId">
+                            ID
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderName">
+                            Name
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderVar">
+                            Address
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-Name="@ViewBag.Name"
+                           asp-route-orderBy="@ViewBag.OrderCat">
+                            Phone
+                        </a>
+                    </th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (VMTblCustomer cus in Model)
+                {
+                    <tr>
+                        <td>@cus.Id</td>
+                        <td>@cus.Name</td>
+                        <td>@cus.Address</td>
+                        <td>@cus.Phone</td>
+                        <td>
+                            <button class="btn btn-success btnEdit" data-cusid="@cus.Id" type="button">Edit</button>
+                            <button class="btn btn-primary btnDetail" data-cusid="@cus.Id" type="submit">Detail</button>
+                            <button class="btn btn-danger btnDelete" data-cusid="@cus.Id" type="submit"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnAdd").click(function () {
+                $("#MyModalBody").load("/Customer/Add");
+                $("#MyModal").modal("show");
+            });
+
+            $("#btnFind").click(function () {
+                $("#frmFind").submit();
+            });
+
+            $(".btnEdit").click(function () {
+                var cusid = $(this).data("cusid");
+                $("#MyModalBody").load("/Customer/Edit?CustomerId=" + cusid);
+                $("#MyModal").modal("show");
+            });
+
+            $(".btnDelete").click(function () {
+                var cusid = $(this).data("cusid");
+                $("#MyModalBody").load("/Customer/Delete?CustomerId=" + cusid);
+                $("#MyModal").modal("show");
+            });
+
+            $(".btnDetail").click(function () {
+                var cusid = $(this).data("cusid");
+                $("#MyModalBody").load("/Customer/Detail?CustomerId=" + cusid);
+                $("#MyModal").modal("show");
+            });
+        });
+    </script>

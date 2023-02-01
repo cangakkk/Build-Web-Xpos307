@@ -1,0 +1,120 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Xpos307.ViewModels
+@model VMTblProduct
+@{
+    Layout = null;
+}
+
+<div class="h2">Variant</div>
+<br>
+
+<div class="card">
+    <form id="frmEditProduct" method="post" asp-action="Edit" enctype="multipart/form-data">
+        <div class="card-header">Menu Edit</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Pilih Gambar: </label>
+                <input class="form-control" type="file" id="ImageFile" name="ImageFile" multiple>
+            </div>
+            <div class="mb-2">
+                <label>Name</label>
+                <input type="text" name="Name" class="form-control" value="@Model.Name"  />
+                <input type="hidden" name="Id" value="@Model.Id"/>
+            </div>
+             <div class="mb-2">
+                <label>Price</label>
+                <input type="text" name="Price" class="form-control" value="@Model.Price"  />
+            </div>
+            <div class="mb-2">
+                <label>Stock</label>
+                <input type="text" name="Stock" class="form-control" value="@Model.Stock"  />
+            </div>
+            <div class="mb-3">
+                <label>Category</label>
+                <select name="CategoryId" class="form-control" id="CategoryId">
+                    <option value="">--Category--</option>
+                    @foreach (VMTblCategory category in ViewBag.category)
+                    {
+                        if(category.Id== Model.CategoryId)
+                        {
+                            <option value="@category.Id" selected>@category.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Variant</label>
+                <select name="VariantId" class="form-control" id="VariantId">
+                        <option value="@Model.VariantId">@Model.VariantName</option>
+                </select>
+            </div>            
+        </div>
+        <div class="card-footer">
+            <input type="hidden" name="UpdateBy" value="2" />
+            <button type="submit" class="btn btn-success" id="btnSave"><i class="fas fa-save"></i> Save </button>
+            <button type="reset" class="btn btn-danger" id="btnReset"> Reset </button>
+            <button type="button" class="btn btn-primary" id="btnCancel"> Cancel </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#btnCancel").click(function () {
+        $("#MyModal").modal("hide");
+    });
+
+    //Get Variant from WebApi ursing Ajax, based on selected category
+    $("#CategoryId").change(function () {
+        var catId = $(this).val();
+
+        $.ajax({
+            url: "@ViewBag.ApiUrl",
+            data: { CategoryId: catId },
+            dataType: "json",
+            success:
+                function (apiResponse) {
+
+                    $("#VariantId").empty();
+
+                    $.each(
+                        apiResponse.entity,
+                        function (idx, res) {
+                            $("#VariantId").append(`<option value="${res.id}">${res.name}</option>`);
+                        }
+                    );
+                }
+        });
+    });
+
+    $("#frmEditProduct").validate({
+        errorClass: "text-danger",
+        rules: {
+            Name: {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            CategoryId: "required",
+            VariantId: "required",
+            Price: {
+                min: 0
+            },
+            Stock: {
+                min: 0
+            }
+        },
+        messages: {
+            Name: {
+                required: "Nama wajib diisi",
+                minlength: "Karakter harus lebih dari 2",
+                maxlength: "Karakter harus kurang dari atau sama dengan 100"
+            }
+        }
+    });
+</script>
